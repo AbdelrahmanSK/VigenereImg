@@ -56,7 +56,7 @@ def vigenere_decrypt(image, key):
     return decrypted_image
 
 
-def process_image(method, key, image_path):
+def process_image(method, key, image_path, output_path):
     image = load_image(image_path)
     if image is None:
         return
@@ -82,4 +82,5 @@ if __name__ == "__main__":
     method = input("Enter 'E' for encryption or 'D' for decryption: ").upper()
     key = input("Enter the encryption/decryption key (a string): ")
     image_path = input("Enter the image file path: ")
-    process_image(method, key, image_path)
+    output_dir = input("Enter the output directory path: ")  # Ask for output directory path
+    process_image(method, key, image_path, output_dir)
