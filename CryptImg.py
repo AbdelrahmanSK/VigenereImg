@@ -73,7 +73,7 @@ def process_image(method, key, image_path, output_path):
 
     output_dir = os.path.dirname(image_path)
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
-    output_filename = f"{suffix}({timestamp}).jpg"
+    output_filename = f"{suffix}({timestamp}).png"
     output_path = os.path.join(output_dir, output_filename)
     save_image(encrypted_image, output_path)
 
