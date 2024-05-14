@@ -50,17 +50,26 @@ def vigenere_encrypt(image, key):
 
 def vigenere_decrypt(image, key):
     width, height = image.size
-    decrypted_image = Image.new("RGB", (width, height))
+    output_mode = "RGBA" if image.mode == "RGBA" else "RGB"
+    decrypted_image = Image.new(output_mode, (width, height))
     pixels = image.load()
 
     key_index = 0
     for x in range(width):
         for y in range(height):
-            r, g, b = pixels[x, y]
+            pixel = pixels[x, y]
+            if output_mode == "RGBA":
+                r, g, b, a = pixel
+                a = (a - ord(key[key_index % len(key)])) % 256  # Decrypt alpha channel
+            else:
+                r, g, b = pixel
             r = (r - ord(key[key_index % len(key)])) % 256
             g = (g - ord(key[key_index % len(key)])) % 256
             b = (b - ord(key[key_index % len(key)])) % 256
-            decrypted_image.putpixel((x, y), (r, g, b))
+            if output_mode == "RGBA":
+                decrypted_image.putpixel((x, y), (r, g, b, a))
+            else:
+                decrypted_image.putpixel((x, y), (r, g, b))
             key_index += 1
 
     return decrypted_image
