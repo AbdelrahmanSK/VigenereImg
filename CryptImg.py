@@ -1,5 +1,4 @@
 import datetime
-import imghdr
 from PIL import Image
 import os
 
