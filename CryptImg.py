@@ -22,20 +22,31 @@ def save_image(image, output_path):
 
 def vigenere_encrypt(image, key):
     width, height = image.size
-    encrypted_image = Image.new("RGB", (width, height))
+    output_mode = "RGBA" if image.mode == "RGBA" else "RGB"
+    encrypted_image = Image.new(output_mode, (width, height))
     pixels = image.load()
 
     key_index = 0
     for x in range(width):
         for y in range(height):
-            r, g, b = pixels[x, y]
+            pixel = pixels[x, y]
+            if output_mode == "RGBA":
+                r, g, b, a = pixel
+                a = (a + ord(key[key_index % len(key)])) % 256  # Encrypt alpha channel
+            else:
+                r, g, b = pixel
+                a = 255  # Set default alpha value if not RGBA
             r = (r + ord(key[key_index % len(key)])) % 256
             g = (g + ord(key[key_index % len(key)])) % 256
             b = (b + ord(key[key_index % len(key)])) % 256
-            encrypted_image.putpixel((x, y), (r, g, b))
+            if output_mode == "RGBA":
+                encrypted_image.putpixel((x, y), (r, g, b, a))
+            else:
+                encrypted_image.putpixel((x, y), (r, g, b))
             key_index += 1
 
     return encrypted_image
+
 
 def vigenere_decrypt(image, key):
     width, height = image.size
